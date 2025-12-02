@@ -1,0 +1,18 @@
+[project]
+name = "dynamic-cheatsheet"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "datasets>=4.4.1",
+    "litellm>=1.80.7",
+    "pandas>=2.3.3",
+    "pronouncing>=0.2.0",
+    "pyphen>=0.17.2",
+    "python-dotenv>=1.2.1",
+    "scikit-learn>=1.7.2",
+    "syllables>=1.1.4",
+    "tap>=0.2",
+    "tiktoken>=0.12.0",
+]
