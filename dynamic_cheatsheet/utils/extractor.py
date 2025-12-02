@@ -9,6 +9,7 @@ The functions are:
 Additional functions can be added as needed.
 """
 
+
 def extract_answer(
     response: str,
 ) -> str:
@@ -30,7 +31,7 @@ def extract_answer(
         except:
             return "No final answer found"
     else:
-        if not("FINAL ANSWER" in response):
+        if "FINAL ANSWER" not in response:
             return "No final answer found"
         try:
             response = response.split("FINAL ANSWER")[-1].strip()
@@ -40,7 +41,7 @@ def extract_answer(
             # First decide whether to split by "```" or "'''" based on the presence of "```" or "'''"
             idx_1 = response.find("'''")
             idx_2 = response.find("```")
-            if min(idx_1, idx_2) != -1: 
+            if min(idx_1, idx_2) != -1:
                 if idx_1 < idx_2:
                     response = response.split("'''")[1].strip()
                 else:
@@ -65,7 +66,7 @@ def extract_cheatsheet(
 ) -> str:
     """
     Extracts the cheatsheet from the model response.
-    
+
     Arguments:
         response : str : The response from the model.
         old_cheatsheet : str : The old cheatsheet to return if the new one is not found.
@@ -89,7 +90,7 @@ def extract_cheatsheet(
 def extract_solution(
     response: str,
     header: str = "SOLUTION EVALUATION:",
-    error_message : str = "No solution evaluation found",
+    error_message: str = "No solution evaluation found",
 ) -> str:
     """
     Extracts the solution evaluation from the model response.

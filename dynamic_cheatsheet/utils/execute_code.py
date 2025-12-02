@@ -10,7 +10,8 @@ Additional functions can be added as needed.
 
 import os
 import tempfile
-from subprocess import Popen, PIPE, TimeoutExpired
+from subprocess import PIPE, Popen, TimeoutExpired
+
 
 def extract_and_run_python_code(txt: str) -> str:
     """
@@ -25,6 +26,7 @@ def extract_and_run_python_code(txt: str) -> str:
     Returns:
         str: Execution result or error message wrapped in output formatting.
     """
+
     def extract_code(input_str: str) -> str:
         """Extract Python code block delimited by ```python and ```."""
         try:
@@ -38,7 +40,9 @@ def extract_and_run_python_code(txt: str) -> str:
         """
         lines = code.splitlines()
         last_line = lines[-1].rstrip()
-        if not last_line.startswith(("print(", "#", " ", "\t")) and (not ("return" in last_line)):# and len((last_line.split(" "))) == 1:
+        if not last_line.startswith(("print(", "#", " ", "\t")) and (
+            "return" not in last_line
+        ):  # and len((last_line.split(" "))) == 1:
             lines[-1] = f"print({last_line})"
         return "\n".join(lines)
 
@@ -64,7 +68,7 @@ def extract_and_run_python_code(txt: str) -> str:
 def execute_code_with_timeout(code: str, timeout: int = 3) -> str:
     """
     Execute Python code with a timeout and return the output.
-    
+
     Parameters:
         code (str): Python code to execute.
         timeout (int): Timeout duration in seconds.

@@ -5,7 +5,7 @@ which takes a target rhyme scheme (and optionally a list of required words) and 
 Returns an empty dictionary if there are no errors, so bool(sonnet_errors(poem, target)) is False if there are no
 errors. It's a permissive check for sonnets errors, meaning that if it is unsure then it doesn't return an error.
 
-Specifically, 
+Specifically,
 
 * Check if it adheres to a given rhyming scheme
 * Check if each line has 10-11 syllables, more precisely, there's some pronounciation of each line with 10-11 syllalbes
@@ -18,23 +18,23 @@ For rhymes, we use python `pronouncing` library based on:
 
 * CMU pronouncing dictionary http://www.speech.cs.cmu.edu/cgi-bin/cmudict
 
-# Syllable counting 
+# Syllable counting
 
 Given that there are multiple ways to pronounce many words (e.g. "caramel" can be pronounced with 2 or 3 syllables),
 we adopt a "permissive" approach and consult multiple tools for syllable counting:
 
-* pronounce - a well-known pronunciation dict based on from CMU's pronouncing dictionary 
+* pronounce - a well-known pronunciation dict based on from CMU's pronouncing dictionary
 * syllables - a Python library for syllable counting
 * pyphen - a Python wrapper for the hyphenation library
 """
 
-from typing import Set, Dict, Any
 import re
+from typing import Any, Dict, Set
+
 import joblib
+import pronouncing
 import pyphen
 import syllables
-import pronouncing
-
 
 ALLOWED_SYLLABLES = {
     10,
@@ -178,17 +178,17 @@ def scheme_errors(poem: str, scheme: str, verbose=False):
             error_reasons[w] = "no internal rhymes, 2+ external perfect rhymes"
         elif external["rhymes"]:
             if len(external["slant_rhymes"]) >= 2:
-                error_reasons[
-                    w
-                ] = "no internal rhymes, 1 external perfect rhyme, 2+ external slant rhymes"
+                error_reasons[w] = (
+                    "no internal rhymes, 1 external perfect rhyme, 2+ external slant rhymes"
+                )
             else:
-                suspicious_reasons[
-                    w
-                ] = "no internal rhymes/slant rhymes, 1 external perfect rhymes"
+                suspicious_reasons[w] = (
+                    "no internal rhymes/slant rhymes, 1 external perfect rhymes"
+                )
         elif len(external["slant_rhymes"]) >= 3:
-            error_reasons[
-                w
-            ] = "no internal rhymes/slant rhymes, 3+ external slant rhymes"
+            error_reasons[w] = (
+                "no internal rhymes/slant rhymes, 3+ external slant rhymes"
+            )
         if verbose:
             print(w, "internal:", internal, "external:", external)
 
@@ -225,9 +225,9 @@ def syllable_variations(text, verbose=False) -> Set[int]:
 
 @memory.cache
 def word_syllables(word: str) -> Set[int]:
-    assert word == clean_word(
-        word
-    ), "Word should be cleaned before hitting word_syllables cache"
+    assert word == clean_word(word), (
+        "Word should be cleaned before hitting word_syllables cache"
+    )
     return SyllableCounters.count_word(word)
 
 
@@ -351,7 +351,7 @@ def fixed_tests():
 
 def summarize_errors(errors, num_samples):
     print(
-        f"Sonnet failure rate: {len(errors)/num_samples:.1%} out of {num_samples:,}, breakdown:"
+        f"Sonnet failure rate: {len(errors) / num_samples:.1%} out of {num_samples:,}, breakdown:"
     )
     wnl = sum("line count" in e for e in errors.values()) / num_samples
     print(f"{wnl:.1%} wrong number of lines")
